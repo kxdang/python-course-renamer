@@ -30,8 +30,8 @@ else:
                 number = int(filename.split('lesson')[1].split('.mp4')[0])
                 if 1 <= number <= len(notepad_names):
                     name = notepad_names[number - 1].strip()
-                    # Replace spaces and slashes with underscores, and remove parentheses
-                    new_name = f"{number}. {name.replace(' ', '_').replace('/', '-').replace('(','').replace(')','')}.mp4"
+                    # Replace spaces and slashes with underscores, remove parentheses, and replace invalid characters
+                    new_name = f'''{number}. {name.replace(' ', '_').replace('/', '-').replace('(', '').replace(')', '').replace('?', '').replace('"', '').replace('<', '_').replace('>', '_').replace(':', '_').replace('|', '_').replace('*', '_')}.mp4'''
 
                     os.rename(filename, new_name)
                     print(f"Renamed '{filename}' to '{new_name}'.")
@@ -41,3 +41,5 @@ else:
                 print(f"Error: File '{filename}' not found.")
             except FileExistsError:
                 print(f"Error: File '{new_name}' already exists.")
+            except ValueError:
+                print(f"Error: Unable to extract number from filename '{filename}'.")
